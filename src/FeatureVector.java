@@ -8,9 +8,9 @@
  */
 public class FeatureVector {
 
-    public static final int DIMENSION = 22;
-    private int[] feature; // dimension = 22
-    private int label; // indicates whether or not user sets default
+    static final int DIMENSION = 22;
+    private double[] feature; // dimension = 22
+    private double label; // indicates whether or not user sets default
 
     FeatureVector(String[] inputDataString) {
 
@@ -18,23 +18,23 @@ public class FeatureVector {
             System.out.println("Error: Invalid data entry.");
         }
 
-        feature = new int[DIMENSION];
+        feature = new double[DIMENSION];
         for (int i = 0; i < DIMENSION; i++) {
-            feature[i] = Integer.parseInt(inputDataString[i]);
+            feature[i] = Double.parseDouble(inputDataString[i]);
         }
-        label = Integer.parseInt(inputDataString[DIMENSION + 1]);
-
-        if (label != 0 && label != 1) {
-            System.out.println("Error: Invalid data entry.");
-        }
+        label = Double.parseDouble(inputDataString[DIMENSION]);
     }
 
-    public int[] getFeature() {
+    double[] getFeature() {
         return feature;
     }
 
-    public int getLabel() {
+    double getLabel() {
         return label;
+    }
+
+    boolean satisfies(Decision.DecisionRule rule) {
+        return feature[rule.getFeatureIdx()] <= rule.getThreshold();
     }
 
 

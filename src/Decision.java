@@ -9,45 +9,66 @@ public class Decision {
 
     Decision Y;
     Decision N;
-    List<FeatureVector> dataSetAssociated;
 
-    boolean isPure;
-    DecisionRule rule; // only valid when isPure is false (branch node)
-    int predictionLabel; // only valid when isPure is true (leaf node)
+    private DecisionRule rule; // only valid when isPure is false (branch node)
+    private double prediction; // only valid when isPure is true (leaf node)
+
+    private List<FeatureVector> associatedDataset;
 
     /**
      * Static nested class for decision rule, only exits in branch node,
      * containing variable i and t for "x_i <= t?"
      */
-    public static class DecisionRule {
+    static class DecisionRule {
         int featureIdx;
-        int threshold;
+        double threshold;
 
-        public DecisionRule(int featureIdx, int threshold) {
+        DecisionRule(int featureIdx, double threshold) {
             this.featureIdx = featureIdx;
             this.threshold = threshold;
         }
+
+        int getFeatureIdx() {
+            return featureIdx;
+        }
+
+        double getThreshold() {
+            return threshold;
+        }
+
+        void printRule() {
+            System.out.println("\"Is x_" + featureIdx + " <= " + threshold + "?\"");
+        }
     }
 
-    public Decision(DecisionRule rule, List<FeatureVector> inputDataSet) {
+    Decision(DecisionRule rule, List<FeatureVector> inputDataset) {
+        this.rule = rule;
+        associatedDataset = inputDataset;
 
     }
 
-    public Decision(int predictionLabel, List<FeatureVector> inputDataSet) {
-
+    Decision(double prediction, List<FeatureVector> inputDataset) {
+        this.prediction = prediction;
+        associatedDataset = inputDataset;
     }
 
-    public void setY(Decision Y) {
-        this.Y = Y;
+    DecisionRule getRule() {
+        return rule;
     }
 
-    public void setN(Decision N) {
-        this.N = N;
+    double getPrediction() {
+        return prediction;
     }
 
+    List<FeatureVector> getAssociatedDataset() {
+        return associatedDataset;
+    }
 
-
-
-
-
+    void printDecision() {
+        if (rule != null) {
+            rule.printRule();
+        } else {
+            System.out.println("\"predict = " + (int) prediction + "\"");
+        }
+    }
 }
